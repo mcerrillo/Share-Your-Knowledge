@@ -7,7 +7,14 @@ var sequelize = new Sequelize('users', 'username', 'password', {
   storage: 'users.sqlite'
 })
 
-var User = sequelize.import(path.join(__dirname,'user'));
+var User        = sequelize.import(path.join(__dirname,'user'));
+var UserContent = sequelize.import(path.join(__dirname,'user_content'));
+
+//Relations
+User.hasMany(UserContent,{foreignKey: 'userID'});
+UserContent.belongsTo(User, {foreignKey: 'userID'});
+
 
 exports.User = User;
+exports.UserContent = UserContent;
 sequelize.sync();
