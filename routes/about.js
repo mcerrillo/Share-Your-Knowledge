@@ -3,5 +3,5 @@
  */
  
 exports.show = function(req, res, next) {
-    res.render('about');
+    res.render('index',{ render_body: 'about' });
 };
