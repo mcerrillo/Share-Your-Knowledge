@@ -1,11 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="/stylesheets/bootstrap.css" rel="stylesheet">
+
+      <title><%= title %></title>
   </head>
+
+
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          <!--/.Project name -->
+          <a class="navbar-brand" href="#"></a>
+
+        </div>
+        <div class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right">
+            <div class="form-group">
+              <input type="text" placeholder="Email" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Sign in</button>
+            <a class="btn btn-success" href="/users/new">Create an account</a>
+          </form>
+
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Share Your Knowledge</h1>
+        <p>The web where you can upload, share and find learning material.</p>
+        <p><a class="btn btn-primary btn-lg" href="/about" role="button">About the project &raquo;</a></p>
+      </div>
+    </div>
+
+
+      <hr>
+
+      <footer>
+        <p>&copy; Design of Dynamic Web Systems 2013</p>
+      </footer>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
   </body>
 </html>
