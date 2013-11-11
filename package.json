@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "express": "3.4.4",
-    "ejs": "*"
+    "ejs": "*",
+    "passport-oauth": "~0.1.4"
   }
 }

@@ -23,12 +23,20 @@
             <span class="icon-bar"></span>
           </button>
 
-          <a class="navbar-brand" href="#">Share Your Knowledge</a>
+          <a class="navbar-brand" href="/">Share Your Knowledge</a>
 
         </div>
         <div class="navbar-collapse collapse">
           <form class="navbar-form navbar-right">
-            <%- include sign_in.ejs %>
+            
+            <% if (!userName) { %>
+                <a class="btn btn-success" href="/login/google">Sign In with Google</a>
+            <% } else { %>
+                <%= userName %>
+                <a class="btn btn-success" href="/logout">Logout</a> 
+            <% } %>
+            
+            
             <!--<button type="submit" class="btn btn-success">Sign in</button>-->
             <!--<a class="btn btn-success" href="/users/new">Create an account</a>-->
           </form>

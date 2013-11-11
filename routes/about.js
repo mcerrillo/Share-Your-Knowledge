@@ -3,5 +3,5 @@
  */
  
 exports.show = function(req, res, next) {
-    res.render('index',{ render_body: 'about' });
+    res.render('index',{ render_body: 'about', userName: req.session.user.name });
 };
