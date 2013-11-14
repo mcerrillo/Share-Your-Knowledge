@@ -1,32 +1,19 @@
 var models = require('../models/models.js');
 
-// GET /users
-exports.index = function(req, res, next) {
-
-    models.User
-        .findAll({order: 'name'})
-        .success(function(users) {
-            res.render('users/index', {
-                users: users
-            });
-        })
-        .error(function(error) {
-            next(error);
-        });
-};
 
 // After login
 exports.login = function(req, res, next) {
+    
     var user = models.User.build(
-        { userID: user.id,
-          name:  user.displayName
+        { userID: req.session.passport.user.id,
+          name:  req.session.passport.user.displayName
         });
     
     // El login debe ser unico:
-    models.User.find({where: {userID: req.user.id}})
+    models.User.find({where: {userID: req.session.passport.user.id}})
         .success(function(existing_user) {
             if (existing_user) {
-                console.log("El usuario \""+ req.user.id +"\" ya existe");
+                console.log("El usuario \""+ req.session.passport.user.id +"\" ya existe");
                 res.redirect('/');
                 return;
             } else {                

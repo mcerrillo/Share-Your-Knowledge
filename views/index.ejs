@@ -32,7 +32,7 @@
             <% if (!userName) { %>
                 <a class="btn btn-success" href="/login/google">Sign In with Google</a>
             <% } else { %>
-                <%= userName %>
+                <a class="navbar-brand" href="/profile"><%= userName %></a>
                 <a class="btn btn-success" href="/logout">Logout</a> 
             <% } %>
             
