@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<div class="container">
+	<div class="jumbotron">
+      <div class="container">
+        <h1>Upload a file</h1>
+        <p>Add notes to your profile!</p>
+        <p><a class="btn btn-primary btn-lg" href="/file_upload" role="button">Select content &raquo;</a></p>
+      </div>
+	</div>
+
+	<div class="jumbotron">
+      <div class="container">
+        <h1>Content</h1>
+
+        <%for(var i in contents){%>
+        	<%console.log(contents[i].dataValues.name)%>
+        	<p>
+        		<%=contents[i].dataValues.name%>
+        		<%var userID = contents[i].dataValues.userID%>
+        		<%var name = contents[i].dataValues.name%>
+        		<%var type = contents[i].dataValues.type%>
+        		<%var path = contents[i].dataValues.path%>
+        		<form method='post' action='/file_delete?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>
+        			<a class="btn btn-success" href="/#">Download</a>
+        			<button class="btn btn-success" type="submit">Delete</button>
+      			</form>
+        	</p>
+        <%}%>       
+      </div>
+	</div>
+</div>

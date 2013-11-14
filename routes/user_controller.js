@@ -30,4 +30,5 @@ exports.login = function(req, res, next) {
         .error(function(error) {
             next(error);
         });
+
 };

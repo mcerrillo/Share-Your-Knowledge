@@ -53,10 +53,16 @@
       <%if(render_body == "about"){%>
         <%- include about.ejs %>
       <%}%>
+      <%if(render_body == "profile"){%>
+        <%- include profile.ejs %>
+      <%}%>
+      <%if(render_body == "upload"){%>
+        <%- include upload.ejs %>
+      <%}%>
       
     </div>
 
-
+  
     <hr>
 
     <footer>

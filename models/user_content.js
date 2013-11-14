@@ -3,11 +3,17 @@ module.exports = function(sequelize, DataTypes) {
       { userID: {
             type: DataTypes.STRING,
         },
-        contentName: {
+        name: {
             type: DataTypes.STRING,
         },
-        content: {
-            type: DataTypes.BIGINT,
+        type: {
+            type: DataTypes.STRING,
+        },
+        path: {
+            type: DataTypes.STRING,
+        },
+        status: {
+            type: DataTypes.STRING,
         }
     });
 }
