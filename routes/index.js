@@ -1,14 +1,12 @@
 
+var contentController = require('./content_controller.js');
+
 /*
  * GET home page.
  */
 
 exports.index = function(req, res){
+
+	contentController.showPublic(req,res);
 	
-	if(req.session.passport.user){
-		res.render('index',{ render_body: 'main', userName: req.session.passport.user.displayName });
-	}else{
-		res.render('index',{ render_body: 'main', userName: undefined});
-	}
-  
 };

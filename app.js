@@ -1,21 +1,19 @@
-
 /**
- * Module dependencies.
- */
+* Module dependencies.
+*/
 
-var express           = require('express');
-var routes            = require('./routes');
-var userController    = require('./routes/user_controller');
+var express = require('express');
+var routes = require('./routes');
+var userController = require('./routes/user_controller');
 var contentController = require('./routes/content_controller');
-var about             = require('./routes/about');
-var profile           = require('./routes/profile');
-var http              = require('http');
-var path              = require('path');
-var passport          = require('passport');
-var GoogleStrategy    = require('passport-google-oauth').OAuth2Strategy;
-var flash             = require('connect-flash');
+var about = require('./routes/about');
+var profile = require('./routes/profile');
+var http = require('http');
+var path = require('path');
+var passport = require('passport');
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-var GOOGLE_CLIENT_ID     = "472666237299.apps.googleusercontent.com";
+var GOOGLE_CLIENT_ID = "472666237299.apps.googleusercontent.com";
 var GOOGLE_CLIENT_SECRET = "i9SyhZD6rqDKvsmXvXZFukzs";
 
 passport.use(new GoogleStrategy({
@@ -63,21 +61,9 @@ app.use(express.cookieParser());
 
 app.use(express.cookieSession(({ secret: 'secret', maxAge: 360*5 })));
 app.use(express.session({ secret: 'secret' }));
-app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
-
-
-
-app.use(function(req, res, next) {
-
-   res.locals.flash = function() { return req.flash() };
-
-   //res.locals.session = req.passport.session;
-
-   next();
-});
 
 // development only
 if ('development' == app.get('env')) {
@@ -107,8 +93,13 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 });
 
+app.get('/file_download',contentController.download);
+app.get('/file_public',contentController.public);
+app.get('/file_private',contentController.private);
+app.get('/file_share',contentController.share);
 app.post('/file_upload',contentController.create);
 app.post('/file_delete',contentController.delete);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -13,18 +13,33 @@
         <h1>Content</h1>
 
         <%for(var i in contents){%>
-        	<%console.log(contents[i].dataValues.name)%>
+          <hr>
         	<p>
-        		<%=contents[i].dataValues.name%>
         		<%var userID = contents[i].dataValues.userID%>
         		<%var name = contents[i].dataValues.name%>
         		<%var type = contents[i].dataValues.type%>
         		<%var path = contents[i].dataValues.path%>
+            <%var status = contents[i].dataValues.status%>
+            <%if(status=="public"){%>
+              <img src="/images/public_world.png" width='30' height='30'>
+              <%=contents[i].dataValues.name%>
+            <%}else{%>
+              <img src="/images/private_key.png" width='40' height='40'>
+              <%=contents[i].dataValues.name%>
+            <%}%>
         		<form method='post' action='/file_delete?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>
-        			<a class="btn btn-success" href="/#">Download</a>
+        			<a class="btn btn-success" href='/file_download?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Download</a>
+              <%if(status=="private"){%>
+                <a class="btn btn-success" href='/file_public?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Public</a>
+                <a class="btn btn-success" href='/file_share?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Share</a>
+              <%}%>
+              <%if(status=="public"){%>
+                <a class="btn btn-success" href='/file_private?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Private</a>
+              <%}%>
         			<button class="btn btn-success" type="submit">Delete</button>
       			</form>
         	</p>
+          <hr>
         <%}%>       
       </div>
 	</div>

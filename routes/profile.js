@@ -10,5 +10,5 @@ exports.showProfile = function(req, res){
 //GET /file_upload
 exports.uploadFile = function(req, res){
 	
-	res.render('index',{ render_body: 'upload', userName: req.session.passport.user.displayName });
+	res.render('index',{ render_body: 'upload', userName: req.session.passport.user.displayName});
 };

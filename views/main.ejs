@@ -1,7 +1,32 @@
-<div class="jumbotron">
+<!DOCTYPE html>
+<div class="container">
+
+	<div class="jumbotron">
+	      <div class="container">
+	        <h1>Share Your Knowledge</h1>
+	        <p>The web where you can upload, share and find learning material.</p>
+	        <p><a class="btn btn-primary btn-lg" href="/about" role="button">About the project &raquo;</a></p>
+	      </div>
+	</div>
+
+	<div class="jumbotron">
       <div class="container">
-        <h1>Share Your Knowledge</h1>
-        <p>The web where you can upload, share and find learning material.</p>
-        <p><a class="btn btn-primary btn-lg" href="/about" role="button">About the project &raquo;</a></p>
+        <h1>Public Content</h1>
+        
+        <%for(var i in contents){%>
+        	<p>
+        		<%=contents[i].dataValues.name%>
+        		<%var userID = contents[i].dataValues.userID%>
+        		<%var name = contents[i].dataValues.name%>
+        		<%var type = contents[i].dataValues.type%>
+        		<%var path = contents[i].dataValues.path%>
+        	</p>
+        	<p>
+        		<a class="btn btn-success" href='/file_download?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Download</a>
+        	</p>
+        <%}%> 
+		
       </div>
+	</div>
+
 </div>

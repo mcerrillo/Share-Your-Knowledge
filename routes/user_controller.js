@@ -13,13 +13,11 @@ exports.login = function(req, res, next) {
     models.User.find({where: {userID: req.session.passport.user.id}})
         .success(function(existing_user) {
             if (existing_user) {
-                console.log("El usuario \""+ req.session.passport.user.id +"\" ya existe");
                 res.redirect('/');
                 return;
             } else {                
                 user.save()
                     .success(function() {
-                        console.log("Usuario creado con exito");
                         res.redirect('/');
                     })
                     .error(function(error) {

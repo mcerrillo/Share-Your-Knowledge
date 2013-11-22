@@ -7,7 +7,24 @@ exports.show = function(req, res, next) {
 	   .findAll({where: {userID: req.session.passport.user.id},
 	             order: 'updatedAt DESC'})
 	   .success(function(contents) {
-		  res.render('index',{ render_body: 'profile', userName: req.session.passport.user.displayName, contents:contents });
+		  res.render('index',{ render_body: 'profile', userName: req.session.passport.user.displayName, contents:contents});
+	   })
+	   .error(function(error) {
+	       next(error);
+	   })
+};
+
+exports.showPublic = function(req, res, next) {
+	models.UserContent
+	   .findAll({where: {status: 'public'},
+	             order: 'updatedAt DESC'})
+	   .success(function(contents) {
+
+		   	if(req.session.passport.user){
+				res.render('index',{ render_body: 'main', userName: req.session.passport.user.displayName, contents:contents});
+			}else{
+				res.render('index',{ render_body: 'main', userName: undefined, contents:contents});
+			}
 	   })
 	   .error(function(error) {
 	       next(error);
@@ -17,7 +34,6 @@ exports.show = function(req, res, next) {
 exports.create = function(req, res, next) {
 	
 	var tmp_path = req.files.thumbnail.path;
-	//var folder_path = './file/'+req.session.passport.user.id;
     var target_path = './files/'+req.session.passport.user.id + '/' + req.files.thumbnail.name;
     mkdirp('./files/'+req.session.passport.user.id, function(err) { 
 
@@ -39,7 +55,7 @@ exports.create = function(req, res, next) {
 			name: req.files.thumbnail.originalFilename,
 			type: req.files.thumbnail.type,
 			path: target_path,
-			status: "public"
+			status: "private"
 		});
 
 	// El login debe ser unico:
@@ -69,13 +85,63 @@ exports.deleteAll = function(req, res, next) {
 
 };
 
+exports.public = function(req, res, next) {
+	var authorID = req.query.userID;
+	var name = req.query.name;
+	var type = req.query.type;
+	var path = req.query.path;
+	if (authorID != req.session.passport.user.id) {
+		//alert("You are not allowed to public this file");
+        res.redirect('/profile');
+	};
+
+	models.UserContent.find({where: {userID: authorID, name: name, type: type}})
+		.success(function(content){
+			if (content) { 
+			    content.updateAttributes({
+			      status: 'public'
+			    }).success(function() {});
+	  		}
+		})
+
+
+	res.redirect('/profile');
+};
+
+exports.private = function(req, res, next) {
+	var authorID = req.query.userID;
+	var name = req.query.name;
+	var type = req.query.type;
+	var path = req.query.path;
+	if (authorID != req.session.passport.user.id) {
+		//alert("You are not allowed to public this file");
+        res.redirect('/profile');
+	};
+
+	models.UserContent.find({where: {userID: authorID, name: name, type: type}})
+		.success(function(content){
+			if (content) { 
+			    content.updateAttributes({
+			      status: 'private'
+			    }).success(function() {});
+	  		}
+		})
+
+
+	res.redirect('/profile');
+};
+
+exports.share = function(req, res, next) {
+	res.redirect('/profile');
+};
+
 exports.delete = function(req, res, next) {
 	var authorID = req.query.userID;
 	var name = req.query.name;
 	var type = req.query.type;
 	var path = req.query.path;
 	if (authorID != req.session.passport.user.id) {
-		alert("You are not allowed to delete this file");
+		//alert("You are not allowed to delete this file");
         res.redirect('/profile');
 	};
 
@@ -87,11 +153,27 @@ exports.delete = function(req, res, next) {
                 		fs.unlink(path, function(e) {
 	            			if(e){console.log(e);}
 	        			});
-	        			console.log("**************************");
-	        			//alert("File deleted successfully");
-	        			//req.flash('success', 'File deleted successfully');
                 	})
             }
         })
+
 	res.redirect('/profile');
+};
+
+exports.download = function(req, res, next) {
+	var authorID = req.query.userID;
+	var name = req.query.name;
+	var type = req.query.type;
+	var path = req.query.path;
+
+	models.UserContent.find({where: {userID: authorID, name: name, type: type}})
+        .success(function(existing_content) {
+            if (existing_content) {
+                res.download(path,name,function(err){
+                	if(err){
+                		console.log(err);
+                	}
+                });
+            }
+        })
 };
