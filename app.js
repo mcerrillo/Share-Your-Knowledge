@@ -99,6 +99,7 @@ app.get('/file_private',contentController.private);
 app.get('/file_share',contentController.share);
 app.post('/file_upload',contentController.create);
 app.post('/file_delete',contentController.delete);
+app.post('/search_public',contentController.searchPublic);
 
 
 http.createServer(app).listen(app.get('port'), function(){

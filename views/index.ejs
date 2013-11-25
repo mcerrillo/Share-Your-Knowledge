@@ -28,20 +28,25 @@
 
         </div>
         <div class="navbar-collapse collapse">
+          
           <form class="navbar-form navbar-right">
-            
+           
             <% if (!userName) { %>
                 <a class="btn btn-success" href="/login/google">Sign In with Google</a>
             <% } else { %>
                 <a class="navbar-brand" href="/profile"><%= userName %></a>
                 <a class="btn btn-success" href="/logout">Logout</a> 
             <% } %>
-            
-            
             <!--<button type="submit" class="btn btn-success">Sign in</button>-->
             <!--<a class="btn btn-success" href="/users/new">Create an account</a>-->
           </form>
 
+          <form method = "post" action="/search_public" class="navbar-form navbar-right">
+            <div class="input-append">
+              <input class="search-query input-medium"  name="search_query" type="text" placeholder="Type for searching" >
+              <button type = "submit "class="btn btn-success" type="button">Search<i class="icon-search"></i></button>
+            </div>
+          </form>
         </div><!--/.navbar-collapse -->
       </div>
     </div>

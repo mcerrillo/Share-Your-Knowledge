@@ -177,3 +177,21 @@ exports.download = function(req, res, next) {
             }
         })
 };
+
+exports.searchPublic = function(req, res, next){
+
+	var searchText = req.body.search_query;
+	models.UserContent
+		.findAll({where: ["name like ? AND status like ?",'%' + searchText + '%','public'],
+				  order: "updatedAt DESC"})
+		.success(function(contents){
+			if(req.session.passport.user){
+				res.render('index',{ render_body: 'main', userName: req.session.passport.user.displayName, contents:contents});
+			}else{
+				res.render('index',{ render_body: 'main', userName: undefined, contents:contents});
+			}
+		})
+		.error(function(error) {
+	       next(error);
+	   	})
+};

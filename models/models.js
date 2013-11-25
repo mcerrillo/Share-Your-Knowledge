@@ -14,7 +14,7 @@ var UserContent = sequelize.import(path.join(__dirname,'user_content'));
 User.hasMany(UserContent,{foreignKey: 'userID'});
 UserContent.belongsTo(User, {foreignKey: 'userID'});
 
-
+exports.Sequelize = sequelize;
 exports.User = User;
 exports.UserContent = UserContent;
 sequelize.sync();
