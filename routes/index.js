@@ -8,5 +8,4 @@ var contentController = require('./content_controller.js');
 exports.index = function(req, res){
 
 	contentController.showPublic(req,res);
-	
 };

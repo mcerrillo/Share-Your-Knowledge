@@ -96,7 +96,7 @@ app.get('/logout', function(req, res){
 app.get('/file_download',contentController.download);
 app.get('/file_public',contentController.public);
 app.get('/file_private',contentController.private);
-app.get('/file_share',contentController.share);
+app.post('/file_share',contentController.share);
 app.post('/file_upload',contentController.create);
 app.post('/file_delete',contentController.delete);
 app.post('/search_public',contentController.searchPublic);

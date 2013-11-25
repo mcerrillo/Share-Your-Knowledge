@@ -4,3 +4,7 @@
 .jumbotron{
 	opacity: 0.8;
 }
+.share_form{
+	display: none;
+	text-align: left;
+}

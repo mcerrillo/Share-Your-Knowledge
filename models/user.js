@@ -11,6 +11,12 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 notEmpty: { msg: "Field name cannot be empty" }
             }
+        },
+        email: {
+            type: DataTypes.STRING,
+            validate: {
+                isEmail: { msg: "Incorrect email format" }
+            }
         }
     });
 }

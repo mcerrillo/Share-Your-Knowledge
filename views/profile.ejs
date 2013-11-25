@@ -12,35 +12,88 @@
       <div class="container">
         <h1>Content</h1>
 
-        <%for(var i in contents){%>
+        <%for(var i in own_contents){%>
           <hr>
         	<p>
-        		<%var userID = contents[i].dataValues.userID%>
-        		<%var name = contents[i].dataValues.name%>
-        		<%var type = contents[i].dataValues.type%>
-        		<%var path = contents[i].dataValues.path%>
-            <%var status = contents[i].dataValues.status%>
+        		<%var userID = own_contents[i].dataValues.userID%>
+        		<%var name = own_contents[i].dataValues.name%>
+        		<%var type = own_contents[i].dataValues.type%>
+        		<%var path = own_contents[i].dataValues.path%>
+            <%var status = own_contents[i].dataValues.status%>
+            <%var contentID = own_contents[i].dataValues.id%>
             <%if(status=="public"){%>
               <img src="/images/public_world.png" width='30' height='30'>
-              <%=contents[i].dataValues.name%>
+              <%=own_contents[i].dataValues.name%>
             <%}else{%>
               <img src="/images/private_key.png" width='40' height='40'>
-              <%=contents[i].dataValues.name%>
+              <%=own_contents[i].dataValues.name%>
             <%}%>
-        		<form method='post' action='/file_delete?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>
+            <form method='post' action='/file_delete?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>
         			<a class="btn btn-success" href='/file_download?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Download</a>
               <%if(status=="private"){%>
                 <a class="btn btn-success" href='/file_public?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Public</a>
-                <a class="btn btn-success" href='/file_share?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Share</a>
+                <a class="btn btn-success" onclick="addUsers(<%=i%>)">Share</a>
               <%}%>
               <%if(status=="public"){%>
                 <a class="btn btn-success" href='/file_private?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Private</a>
               <%}%>
         			<button class="btn btn-success" type="submit">Delete</button>
       			</form>
+            
         	</p>
+          <form  method = "post" action="/file_share?contentID=<%=contentID%>">
+              <div id = "share_form_<%=i%>" class="input-append share_form" >
+                <input class="search-query input-medium"  name="email" type="text" placeholder="Add user by email">
+                <button type = "submit "class="btn btn-success" type="button">Ok<i class="icon-search"></i></button>
+              </div>
+          </form>
           <hr>
-        <%}%>       
+        <%}%>
+<!--/////////////////////////////////////////////////////////////////////////////////-->
+        <%for(var i in authorized_contents){%>
+          <hr>
+          <p>
+            <%var userID = authorized_contents[i].dataValues.userID%>
+            <%var name = authorized_contents[i].dataValues.name%>
+            <%var type = authorized_contents[i].dataValues.type%>
+            <%var path = authorized_contents[i].dataValues.path%>
+            <%var status = authorized_contents[i].dataValues.status%>
+            <%var contentID = authorized_contents[i].dataValues.id%>
+            <%if(status=="public"){%>
+              <img src="/images/public_world.png" width='30' height='30'>
+              <%=authorized_contents[i].dataValues.name%>
+            <%}else{%>
+              <img src="/images/private_key.png" width='40' height='40'>
+              <%=authorized_contents[i].dataValues.name%>
+            <%}%>
+            <form method='post' action='/file_delete?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>
+              <a class="btn btn-success" href='/file_download?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Download</a>
+              <%if(status=="private"){%>
+                <a class="btn btn-success" href='/file_public?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Public</a>
+                <a class="btn btn-success" onclick="addUsers(<%=i%>)">Share</a>
+              <%}%>
+              <%if(status=="public"){%>
+                <a class="btn btn-success" href='/file_private?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Private</a>
+              <%}%>
+              <button class="btn btn-success" type="submit">Delete</button>
+            </form>
+            
+          </p>
+          <form  method = "post" action="/file_share?contentID=<%=contentID%>">
+              <div id = "share_form_<%=i%>" class="input-append share_form" >
+                <input class="search-query input-medium"  name="email" type="text" placeholder="Add user by email">
+                <button type = "submit "class="btn btn-success" type="button">Ok<i class="icon-search"></i></button>
+              </div>
+          </form>
+          <hr>
+        <%}%>              
       </div>
 	</div>
 </div>
+<script languaje="javascript">
+  function addUsers(i){
+    var div = document.getElementById('share_form_'+i);
+    if(div.style.display == 'inline'){div.style.display = 'none';}
+    else{div.style.display = 'inline';}
+  }
+</script>

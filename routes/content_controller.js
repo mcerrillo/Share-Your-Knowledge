@@ -6,8 +6,36 @@ exports.show = function(req, res, next) {
 	models.UserContent
 	   .findAll({where: {userID: req.session.passport.user.id},
 	             order: 'updatedAt DESC'})
-	   .success(function(contents) {
-		  res.render('index',{ render_body: 'profile', userName: req.session.passport.user.displayName, contents:contents});
+	   .success(function(own_contents) {
+	   		
+		  models.Authorized
+		  	.findAll({where: {email: req.session.passport.user.emails[0].value},
+	             	  order: 'updatedAt DESC'})
+		  	.success(function(authorized_contents_list){
+		  		/*var n = 0;
+		  		for(var i in authorized_contents_list){
+		  			n++;
+		  		}*/
+
+		  		var authorized_contents = new Array();
+
+		  		for(var i in authorized_contents_list){
+		  			models.UserContent
+		  				.find({where: {id: authorized_contents_list[i].dataValues.contentID}})
+		  				.success(function(content){
+		  					authorized_contents[i] = content;
+		  				})
+		  				.error(function(error) {
+	       					next(error);
+	   					})
+		  		}
+		  		//if(n==authorized_contents.length){
+		  			res.render('index',{ render_body: 'profile', userName: req.session.passport.user.displayName, own_contents: own_contents, authorized_contents: authorized_contents});
+		  		//}
+		  	})
+		  	.error(function(error) {
+	       		next(error);
+	   		})
 	   })
 	   .error(function(error) {
 	       next(error);
@@ -62,13 +90,13 @@ exports.create = function(req, res, next) {
     models.UserContent.find({where: {userID: req.session.passport.user.id, name: req.files.thumbnail.originalFilename, type: req.files.thumbnail.type}})
         .success(function(existing_content) {
             if (existing_content) {
-                console.log("El archivo: \""+ req.files.thumbnail.originalFilename +"\" ya existe");
+                console.log("The file: \""+ req.files.thumbnail.originalFilename +"\" already exists");
                 res.redirect('/profile');
                 return;
             } else {                
                 content.save()
                     .success(function() {
-                        console.log("Archivo añadido con exito");
+                        console.log("File successfully uploaded");
                         res.redirect('/profile');
                     })
                     .error(function(error) {
@@ -132,6 +160,33 @@ exports.private = function(req, res, next) {
 };
 
 exports.share = function(req, res, next) {
+	var contentID = req.query.contentID;
+	var email = req.body.email;
+
+	 models.User.find({where: {email: email}})
+        .success(function(existing_user) {
+            if (existing_user) {
+                var authorized = models.Authorized.build(
+					{
+						contentID: contentID,
+						email: email
+					});
+                authorized.save()
+                    .success(function() {
+                        console.log("Authorized user successfully added");   
+                    })
+                    .error(function(error) {
+                        next(error);
+                    });
+                return;
+            }else{
+            	console.log("No user with email: " + email);                
+            }
+        })
+        .error(function(error) {
+            next(error);
+        });
+
 	res.redirect('/profile');
 };
 

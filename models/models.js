@@ -9,12 +9,15 @@ var sequelize = new Sequelize('mainDB', 'username', 'password', {
 
 var User        = sequelize.import(path.join(__dirname,'user'));
 var UserContent = sequelize.import(path.join(__dirname,'user_content'));
+var Authorized = sequelize.import(path.join(__dirname,'authorized'));
 
 //Relations
 User.hasMany(UserContent,{foreignKey: 'userID'});
 UserContent.belongsTo(User, {foreignKey: 'userID'});
+UserContent.hasOne(Authorized,{foreignKey: 'contentID'});
+Authorized.belongsTo(UserContent, {foreignKey: 'contentID'});
 
-exports.Sequelize = sequelize;
 exports.User = User;
 exports.UserContent = UserContent;
+exports.Authorized = Authorized;
 sequelize.sync();

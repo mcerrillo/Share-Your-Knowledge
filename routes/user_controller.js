@@ -6,7 +6,8 @@ exports.login = function(req, res, next) {
     
     var user = models.User.build(
         { userID: req.session.passport.user.id,
-          name:  req.session.passport.user.displayName
+          name:  req.session.passport.user.displayName,
+          email: req.session.passport.user.emails[0].value
         });
     
     // El login debe ser unico:
