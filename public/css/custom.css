@@ -12,3 +12,18 @@
 	display: none;
 	text-align: left;
 }
+.alert-error{
+	background-color: #d35454;
+}
+.alert-success{
+	background-color: #81d763;
+}
+.alert-info{
+	background-color: #637cd7;
+}
+.navbar-brand{
+	vertical-align: center;
+}
+hr{
+	visibility: hidden;
+}
