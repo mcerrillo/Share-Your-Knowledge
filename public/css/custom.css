@@ -1,0 +1,14 @@
+.custom_web{
+	background-image: url("/images/background.jpg");
+	background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+}
+.jumbotron{
+	opacity: 0.8;
+}
+.share_form{
+	display: none;
+	text-align: left;
+}

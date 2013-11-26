@@ -5,33 +5,15 @@ var mkdirp = require('mkdirp');
 exports.show = function(req, res, next) {
 	models.UserContent
 	   .findAll({where: {userID: req.session.passport.user.id},
-	             order: 'updatedAt DESC'})
+	             order: 'name'})
 	   .success(function(own_contents) {
-	   		
+
 		  models.Authorized
 		  	.findAll({where: {email: req.session.passport.user.emails[0].value},
+		  			  include: [ { model: models.UserContent, as: 'content' } ],
 	             	  order: 'updatedAt DESC'})
-		  	.success(function(authorized_contents_list){
-		  		/*var n = 0;
-		  		for(var i in authorized_contents_list){
-		  			n++;
-		  		}*/
-
-		  		var authorized_contents = new Array();
-
-		  		for(var i in authorized_contents_list){
-		  			models.UserContent
-		  				.find({where: {id: authorized_contents_list[i].dataValues.contentID}})
-		  				.success(function(content){
-		  					authorized_contents[i] = content;
-		  				})
-		  				.error(function(error) {
-	       					next(error);
-	   					})
-		  		}
-		  		//if(n==authorized_contents.length){
-		  			res.render('index',{ render_body: 'profile', userName: req.session.passport.user.displayName, own_contents: own_contents, authorized_contents: authorized_contents});
-		  		//}
+		  	.success(function(authorized_contents){
+		  		res.render('index',{ render_body: 'profile', userName: req.session.passport.user.displayName, own_contents: own_contents, authorized_contents: authorized_contents, fl: req.flash()});
 		  	})
 		  	.error(function(error) {
 	       		next(error);
@@ -45,13 +27,13 @@ exports.show = function(req, res, next) {
 exports.showPublic = function(req, res, next) {
 	models.UserContent
 	   .findAll({where: {status: 'public'},
-	             order: 'updatedAt DESC'})
+	             order: 'name'})
 	   .success(function(contents) {
 
 		   	if(req.session.passport.user){
-				res.render('index',{ render_body: 'main', userName: req.session.passport.user.displayName, contents:contents});
+				res.render('index',{ render_body: 'main', userName: req.session.passport.user.displayName, contents: contents, fl: req.flash()});
 			}else{
-				res.render('index',{ render_body: 'main', userName: undefined, contents:contents});
+				res.render('index',{ render_body: 'main', userName: undefined, contents: contents, fl: req.flash()});
 			}
 	   })
 	   .error(function(error) {
@@ -90,13 +72,13 @@ exports.create = function(req, res, next) {
     models.UserContent.find({where: {userID: req.session.passport.user.id, name: req.files.thumbnail.originalFilename, type: req.files.thumbnail.type}})
         .success(function(existing_content) {
             if (existing_content) {
-                console.log("The file: \""+ req.files.thumbnail.originalFilename +"\" already exists");
+                req.flash('error', "The file: \""+ req.files.thumbnail.originalFilename +"\" already exists");
                 res.redirect('/profile');
                 return;
             } else {                
                 content.save()
                     .success(function() {
-                        console.log("File successfully uploaded");
+                        req.flash('success','File successfully uploaded');
                         res.redirect('/profile');
                     })
                     .error(function(error) {
@@ -241,9 +223,9 @@ exports.searchPublic = function(req, res, next){
 				  order: "updatedAt DESC"})
 		.success(function(contents){
 			if(req.session.passport.user){
-				res.render('index',{ render_body: 'main', userName: req.session.passport.user.displayName, contents:contents});
+				res.render('index',{ render_body: 'main', userName: req.session.passport.user.displayName, contents:contents, fl: req.flash()});
 			}else{
-				res.render('index',{ render_body: 'main', userName: undefined, contents:contents});
+				res.render('index',{ render_body: 'main', userName: undefined, contents:contents, fl: req.flash()});
 			}
 		})
 		.error(function(error) {

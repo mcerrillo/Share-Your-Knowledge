@@ -58,11 +58,16 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.bodyParser({uploadDir:'./files'}));
 app.use(express.cookieParser());
-
+app.use(require('connect-flash')());
+app.use(function(req, res, next) {
+  res.locals.flash = function() { return req.flash() };
+  next();
+})
 app.use(express.cookieSession(({ secret: 'secret', maxAge: 360*5 })));
 app.use(express.session({ secret: 'secret' }));
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use(app.router);
 
 // development only
@@ -88,7 +93,7 @@ app.get('/login/google/callback',
   });
 
 app.get('/logout', function(req, res){
-
+  req.flash('success','Logged out');
   req.logOut();
   res.redirect('/');
 });

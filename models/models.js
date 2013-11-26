@@ -14,8 +14,8 @@ var Authorized = sequelize.import(path.join(__dirname,'authorized'));
 //Relations
 User.hasMany(UserContent,{foreignKey: 'userID'});
 UserContent.belongsTo(User, {foreignKey: 'userID'});
-UserContent.hasOne(Authorized,{foreignKey: 'contentID'});
-Authorized.belongsTo(UserContent, {foreignKey: 'contentID'});
+UserContent.hasMany(Authorized,{as: 'content', foreignKey: 'contentID'});
+Authorized.belongsTo(UserContent, {as: 'content', foreignKey: 'contentID'});
 
 exports.User = User;
 exports.UserContent = UserContent;

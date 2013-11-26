@@ -2,7 +2,7 @@
 <div class="container">
 	<div class="jumbotron">
       <div class="container">
-        <h1>Upload a file</h1>
+        <h2>Upload a file</h2>
         <p>Add notes to your profile!</p>
         <p><a class="btn btn-primary btn-lg" href="/file_upload" role="button">Select content &raquo;</a></p>
       </div>
@@ -10,11 +10,12 @@
 
 	<div class="jumbotron">
       <div class="container">
-        <h1>Content</h1>
-
+        <h2>Content</h2>
+        <%var own_contents_size = 0;%>   
         <%for(var i in own_contents){%>
           <hr>
         	<p>
+            <%own_contents_size++%>   
         		<%var userID = own_contents[i].dataValues.userID%>
         		<%var name = own_contents[i].dataValues.name%>
         		<%var type = own_contents[i].dataValues.type%>
@@ -22,11 +23,11 @@
             <%var status = own_contents[i].dataValues.status%>
             <%var contentID = own_contents[i].dataValues.id%>
             <%if(status=="public"){%>
-              <img src="/images/public_world.png" width='30' height='30'>
-              <%=own_contents[i].dataValues.name%>
+              <img src="/images/global.png" width='60' height='40'>
+              <%=name%>
             <%}else{%>
-              <img src="/images/private_key.png" width='40' height='40'>
-              <%=own_contents[i].dataValues.name%>
+              <img src="/images/candado.png" width='30' height='30'>
+              <%=name%>
             <%}%>
             <form method='post' action='/file_delete?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>
         			<a class="btn btn-success" href='/file_download?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Download</a>
@@ -53,34 +54,24 @@
         <%for(var i in authorized_contents){%>
           <hr>
           <p>
-            <%var userID = authorized_contents[i].dataValues.userID%>
-            <%var name = authorized_contents[i].dataValues.name%>
-            <%var type = authorized_contents[i].dataValues.type%>
-            <%var path = authorized_contents[i].dataValues.path%>
-            <%var status = authorized_contents[i].dataValues.status%>
-            <%var contentID = authorized_contents[i].dataValues.id%>
-            <%if(status=="public"){%>
-              <img src="/images/public_world.png" width='30' height='30'>
-              <%=authorized_contents[i].dataValues.name%>
-            <%}else{%>
-              <img src="/images/private_key.png" width='40' height='40'>
-              <%=authorized_contents[i].dataValues.name%>
-            <%}%>
+            <%var index = parseInt(own_contents_size) + parseInt(i)%>
+            <%var userID = authorized_contents[i].content.dataValues.userID%>
+            <%var name = authorized_contents[i].content.dataValues.name%>
+            <%var type = authorized_contents[i].content.dataValues.type%>
+            <%var path = authorized_contents[i].content.dataValues.path%>
+            <%var status = authorized_contents[i].content.dataValues.status%>
+            <%var contentID = authorized_contents[i].content.dataValues.id%>
+            
+            <img src="/images/shared.png" width='30' height='30'>
+            <%=name%>
             <form method='post' action='/file_delete?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>
-              <a class="btn btn-success" href='/file_download?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Download</a>
-              <%if(status=="private"){%>
-                <a class="btn btn-success" href='/file_public?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Public</a>
-                <a class="btn btn-success" onclick="addUsers(<%=i%>)">Share</a>
-              <%}%>
-              <%if(status=="public"){%>
-                <a class="btn btn-success" href='/file_private?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Private</a>
-              <%}%>
-              <button class="btn btn-success" type="submit">Delete</button>
+                <a class="btn btn-success" href='/file_download?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Download</a>
+                <a class="btn btn-success" onclick="addUsers(<%=index%>)">Share</a>
             </form>
             
           </p>
           <form  method = "post" action="/file_share?contentID=<%=contentID%>">
-              <div id = "share_form_<%=i%>" class="input-append share_form" >
+              <div id = "share_form_<%=index%>" class="input-append share_form" >
                 <input class="search-query input-medium"  name="email" type="text" placeholder="Add user by email">
                 <button type = "submit "class="btn btn-success" type="button">Ok<i class="icon-search"></i></button>
               </div>

@@ -5,8 +5,8 @@
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link href="/stylesheets/bootstrap.css" rel="stylesheet">
-      <link href="/stylesheets/custom.css" rel="stylesheet">
+      <link href="/css/bootstrap.css" rel="stylesheet">
+      <link href="/css/custom.css" rel="stylesheet">
 
       <title>Share Your Knowledge</title>
   </head>
@@ -51,8 +51,57 @@
       </div>
     </div>
 
+   
     <hr>
-    <div>
+    
+    <div class="container">
+          <% var flash = fl %>
+           <% if (flash.info) { %>
+              <div class="row">
+                <div class="span12">
+                  <div class='alert alert-info'>
+                    <a class="close" data-dismiss="alert" href="#">×</a>
+                    <ul>
+                      <% for (var i in flash.info) { %>
+                        <li> <%= flash.info[i] %> </li>
+                      <% } %>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+          <% if (flash.success) { %>
+            <div class="row">
+              <div class="span12">
+                <div class='alert alert-success'>
+                  <a class="close" data-dismiss="alert" href="#">×</a>
+                  <ul>
+                    <% for (var i in flash.success) { %>
+                      <li> <%= flash.success[i] %> </li>
+                    <% } %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          <% } %>
+
+
+          <% if (flash.error) { %>
+            <div class="row">
+              <div class="span12">
+                <div class='alert alert-error'>
+                  <a class="close" data-dismiss="alert" href="#">×</a>
+                  <ul>
+                    <% for (var i in flash.error) { %>
+                      <li> <%= flash.error[i] %> </li>
+                    <% } %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          <% } %>
+      </div>
+      <div>
       <%if(render_body == "main"){%>
         <%- include main.ejs %>
       <%}%>
@@ -67,18 +116,18 @@
       <%}%>
       
     </div>
-
-
     <hr>
 
     <footer>
       <p>&copy; Design of Dynamic Web Systems 2013</p>
     </footer>
 
-
+ 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
   </div>
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
   </body>
 </html>
