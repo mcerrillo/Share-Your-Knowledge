@@ -29,7 +29,7 @@
               <img src="/images/candado.png" width='30' height='30'>
               <%=name%>
             <%}%>
-            <form method='post' action='/file_delete?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>
+            <form method='post' action='/file_delete?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>&authority=owner'>
         			<a class="btn btn-success" href='/file_download?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Download</a>
               <%if(status=="private"){%>
                 <a class="btn btn-success" href='/file_public?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Public</a>
@@ -64,9 +64,10 @@
             
             <img src="/images/shared.png" width='30' height='30'>
             <%=name%>
-            <form method='post' action='/file_delete?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>
+            <form method='post' action='/file_delete?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>&authority=authorized&contentID=<%=contentID%>'>
                 <a class="btn btn-success" href='/file_download?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Download</a>
                 <a class="btn btn-success" onclick="addUsers(<%=index%>)">Share</a>
+                <button class="btn btn-success" type="submit">Delete</button>
             </form>
             
           </p>

@@ -75,8 +75,13 @@ exports.create = function(req, res, next) {
                 req.flash('error', "The file: \""+ req.files.thumbnail.originalFilename +"\" already exists");
                 res.redirect('/profile');
                 return;
-            } else {                
-                content.save()
+            } else {
+            	if(req.files.thumbnail.originalFilename == ''){
+            		req.flash('error', "No file selected");
+	                res.redirect('/profile');
+	                return;
+            	}else{
+            		content.save()
                     .success(function() {
                         req.flash('success','File successfully uploaded');
                         res.redirect('/profile');
@@ -84,6 +89,7 @@ exports.create = function(req, res, next) {
                     .error(function(error) {
                         next(error);
                     });
+            	}   
             }
         })
         .error(function(error) {
@@ -101,7 +107,7 @@ exports.public = function(req, res, next) {
 	var type = req.query.type;
 	var path = req.query.path;
 	if (authorID != req.session.passport.user.id) {
-		//alert("You are not allowed to public this file");
+		req.flash('error','You are not allowed to public this file');
         res.redirect('/profile');
 	};
 
@@ -124,7 +130,7 @@ exports.private = function(req, res, next) {
 	var type = req.query.type;
 	var path = req.query.path;
 	if (authorID != req.session.passport.user.id) {
-		//alert("You are not allowed to public this file");
+		req.flash('error','You are not allowed to make this file private');
         res.redirect('/profile');
 	};
 
@@ -142,33 +148,46 @@ exports.private = function(req, res, next) {
 };
 
 exports.share = function(req, res, next) {
+	var aux = 0;
 	var contentID = req.query.contentID;
 	var email = req.body.email;
+
+	/*models.User.find({where: {email: email},
+		  			  include: [ { model: models.Authorized, as: 'authorized' } ],
+	             	  order: 'updatedAt DESC'})*/
 
 	 models.User.find({where: {email: email}})
         .success(function(existing_user) {
             if (existing_user) {
-                var authorized = models.Authorized.build(
-					{
-						contentID: contentID,
-						email: email
-					});
-                authorized.save()
-                    .success(function() {
-                        console.log("Authorized user successfully added");   
-                    })
-                    .error(function(error) {
-                        next(error);
-                    });
-                return;
+            	models.Authorized.find({where: {contentID: contentID, email: email}})
+            		.success(function(authorized_content){
+            			if(authorized_content){
+            				req.flash('success', "The file was already shared with " + email);
+            			}
+            			else{
+            				var authorized = models.Authorized.build(
+								{
+									contentID: contentID,
+									email: email
+								});
+                			authorized.save()
+			                    .success(function() {
+			                    	aux=25
+			                    	req.flash('success','Authorized user successfully added');
+			                    })
+			                    .error(function(error) {
+			                        next(error);
+			                    });
+            			}
+            		})
+                
             }else{
-            	console.log("No user with email: " + email);                
+            	req.flash('error','No user with email: ' + email);             
             }
         })
         .error(function(error) {
             next(error);
         });
-
 	res.redirect('/profile');
 };
 
@@ -177,33 +196,50 @@ exports.delete = function(req, res, next) {
 	var name = req.query.name;
 	var type = req.query.type;
 	var path = req.query.path;
-	if (authorID != req.session.passport.user.id) {
-		//alert("You are not allowed to delete this file");
-        res.redirect('/profile');
-	};
+	var authority = req.query.authority;
 
-	models.UserContent.find({where: {userID: authorID, name: name, type: type}})
-        .success(function(existing_content) {
-            if (existing_content) {
-                existing_content.destroy()
-                	.success(function(){
-                		fs.unlink(path, function(e) {
-	            			if(e){console.log(e);}
-	        			});
-                	})
-            }
-        })
+	if(authority == 'owner'){
+		models.UserContent.find({where: {userID: authorID, name: name, type: type}})
+	        .success(function(existing_content) {
+	            if (existing_content) {
+	            	var contentID = existing_content.dataValues.id;
+
+	                existing_content.destroy()
+	                	.success(function(){
+	                		fs.unlink(path, function(e) {
+		            			if(e){console.log(e);}
+		        			});
+	                	})
+
+	                models.Authorized.find({where: {contentID: contentID}})
+	                	.success(function(authorized_content) {
+	                		if(authorized_content){
+	                			authorized_content.destroy()
+	                				.success(function(){})
+	                		}
+	                	})
+	            }
+	        })
+	}else{
+		var contentID = req.query.contentID;
+		models.Authorized.find({where: {contentID: contentID}})
+	                	.success(function(authorized_content) {
+	                		if(authorized_content){
+	                			authorized_content.destroy()
+	                				.success(function(){})
+	                		}
+	                	})
+	}
 
 	res.redirect('/profile');
 };
 
 exports.download = function(req, res, next) {
-	var authorID = req.query.userID;
+	var userID = req.query.userID;
 	var name = req.query.name;
 	var type = req.query.type;
 	var path = req.query.path;
-
-	models.UserContent.find({where: {userID: authorID, name: name, type: type}})
+	models.UserContent.find({where: {userID: userID, name: name, type: type}})
         .success(function(existing_content) {
             if (existing_content) {
                 res.download(path,name,function(err){
