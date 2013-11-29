@@ -12,7 +12,8 @@
     "connect-flash": "*",
     "passport": "*",
     "passport-google-oauth": "*",
-    "sequelize-sqlite": "*"
+    "sequelize": "*",
+    "sqlite3": ">=2.0.0"
   },
   "engines": {
     "node": "0.10.21",

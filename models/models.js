@@ -1,6 +1,5 @@
 var path = require('path');
-var Sequelize = require('sequelize-sqlite').sequelize;
-var sqlite = require('sequelize-sqlite').sqlite;
+var Sequelize = require('sequelize');
 
 var sequelize = new Sequelize('mainDB', 'username', 'password', {
   dialect: 'sqlite',
