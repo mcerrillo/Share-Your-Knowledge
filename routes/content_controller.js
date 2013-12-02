@@ -8,7 +8,7 @@ exports.show = function(req, res, next) {
 	             order: 'name'})
 	   .success(function(own_contents) {
 
-		  /*models.Authorized
+		  models.Authorized
 		  	.findAll({where: {email: req.session.passport.user.emails[0].value},
 	             	  order: 'updatedAt DESC',
 	             	  include: [ {model: models.UserContent, as: 'content'} ]
@@ -18,10 +18,10 @@ exports.show = function(req, res, next) {
 		  	})
 		  	.error(function(error) {
 	       		next(error);
-	   		})*/
+	   		})
 
 	   		//****************************************************
-	   		models.Authorized
+	   		/*models.Authorized
 			  	.findAll({where: {email: req.session.passport.user.emails[0].value},
 		             	  order: 'updatedAt DESC'
 		             	})
@@ -43,7 +43,7 @@ exports.show = function(req, res, next) {
 			  	})
 			  	.error(function(error) {
 		       		next(error);
-		   		})
+		   		})*/
 	   		//****************************************************
 
 	   })
