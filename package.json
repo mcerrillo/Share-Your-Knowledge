@@ -12,7 +12,7 @@
     "connect-flash": "*",
     "passport": "*",
     "passport-google-oauth": "*",
-    "sequelize": "2.0.0-beta.1",
+    "sequelize": "1.7.0-alpha2",
     "pg": "0.6.x"
   },
   "devDependencies": {
