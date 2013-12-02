@@ -8,43 +8,37 @@ exports.show = function(req, res, next) {
 	             order: 'name'})
 	   .success(function(own_contents) {
 
-		  models.Authorized
+		  /*models.Authorized
 		  	.findAll({where: {email: req.session.passport.user.emails[0].value},
 	             	  order: 'updatedAt DESC',
 	             	  include: [ {model: models.UserContent, as: 'content'} ]
-	             	})
+	             	})*/
+	   		
+	   		var query_1 = "SELECT * FROM Authorizeds WHERE email = ?";
+
+	   		models.Sequelize.query(query_1,null,{raw: true},[req.session.passport.user.emails[0].value])
 		  	.success(function(authorized_contents){
-		  		res.render('index',{ render_body: 'profile', userName: req.session.passport.user.displayName, own_contents: own_contents, authorized_contents: authorized_contents, fl: req.flash()});
+
+		  		var authorized_contents_aux = new Array();
+		  		var query_2 = "SELECT * FROM UserContents WHERE id = ?";
+		  		for(var i in authorized_contents){
+
+		  			models.Sequelize.query(query_2,null,{raw: true},[authorized_contents[i].contentID])
+		  			.success(function(content_aux){
+		  				console.log(content_aux);
+		  				authorized_contents_aux[i] = content_aux;
+		  			})
+		  			.error(function(error){
+		  				next(error);
+		  			})
+		  		}
+		  		console.log('***************************************');
+		  		console.log(authorized_contents_aux);
+		  		res.render('index',{ render_body: 'profile', userName: req.session.passport.user.displayName, own_contents: own_contents, authorized_contents: authorized_contents_aux, fl: req.flash()});
 		  	})
 		  	.error(function(error) {
 	       		next(error);
 	   		})
-
-	   		//****************************************************
-	   		/*models.Authorized
-			  	.findAll({where: {email: req.session.passport.user.emails[0].value},
-		             	  order: 'updatedAt DESC'
-		             	})
-			  	.success(function(authorized_contents){
-			  		var authorized_contents_aux = new Array();
-			  		for(var i in authorized_contents){
-			  			models.UserContent
-			  				.find({where: {id: authorized_contents[i].contentID},
-		             	  		   order: 'updatedAt DESC'
-		             		     })
-			  				.success(function(content_aux){
-			  					authorized_contents_aux[i] = content_aux;
-			  				})
-			  				.error(function(error){
-			  					next(error);
-			  				})
-			  		}
-			  		res.render('index',{ render_body: 'profile', userName: req.session.passport.user.displayName, own_contents: own_contents, authorized_contents: authorized_contents_aux, fl: req.flash()});
-			  	})
-			  	.error(function(error) {
-		       		next(error);
-		   		})*/
-	   		//****************************************************
 
 	   })
 	   .error(function(error) {
@@ -200,7 +194,6 @@ exports.share = function(req, res, next) {
 								});
                 			authorized.save()
 			                    .success(function() {
-			                    	aux=25
 			                    	req.flash('success','Authorized user successfully added');
 			                    })
 			                    .error(function(error) {
