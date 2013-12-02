@@ -25,4 +25,4 @@ Authorized.belongsTo(UserContent, {as: 'content', foreignKey: 'contentID'});
 exports.User = User;
 exports.UserContent = UserContent;
 exports.Authorized = Authorized;
-sequelize.sync();
+sequelize.sync(); 
