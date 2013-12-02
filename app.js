@@ -30,7 +30,7 @@ passport.use(new GoogleStrategy({
       // to associate the Google account with a user record in your database,
       // and return that user instead.
       return done(null, profile);
-    });
+    });  
   }
 ));
 
