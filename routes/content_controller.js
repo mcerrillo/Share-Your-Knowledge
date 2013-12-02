@@ -20,6 +20,7 @@ exports.show = function(req, res, next) {
 	   		})
 	   })
 	   .error(function(error) {
+	   	   cosole.log(error);
 	       next(error);
 	   })
 };
