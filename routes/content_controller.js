@@ -8,7 +8,7 @@ exports.show = function(req, res, next) {
 	             order: 'name'})
 	   .success(function(own_contents) {
 
-		  models.Authorized
+		  /*models.Authorized
 		  	.findAll({where: {email: req.session.passport.user.emails[0].value},
 	             	  order: 'updatedAt DESC',
 	             	  include: [ {model: models.UserContent, as: 'content'} ]
@@ -18,7 +18,33 @@ exports.show = function(req, res, next) {
 		  	})
 		  	.error(function(error) {
 	       		next(error);
-	   		})
+	   		})*/
+
+	   		//****************************************************
+	   		models.Authorized
+			  	.findAll({where: {email: req.session.passport.user.emails[0].value},
+		             	  order: 'updatedAt DESC'
+		             	})
+			  	.success(function(authorized_contents){
+			  		var authorized_contents_aux = new Array();
+			  		for(var i in authorized_contents){
+			  			models.UserContent
+			  				.find({where: {id: authorized_contents[i].contentID},
+		             	  		   order: 'updatedAt DESC'
+		             		     })
+			  				.success(function(content_aux){
+			  					authorized_contents_aux[i] = content_aux;
+			  				})
+			  				.error(function(error){
+			  					next(error);
+			  				})
+			  		}
+			  		res.render('index',{ render_body: 'profile', userName: req.session.passport.user.displayName, own_contents: own_contents, authorized_contents: authorized_contents_aux, fl: req.flash()});
+			  	})
+			  	.error(function(error) {
+		       		next(error);
+		   		})
+	   		//****************************************************
 
 	   })
 	   .error(function(error) {
