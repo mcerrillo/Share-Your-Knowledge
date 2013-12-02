@@ -11,7 +11,7 @@ exports.show = function(req, res, next) {
 		  models.Authorized
 		  	.findAll({where: {email: req.session.passport.user.emails[0].value},
 	             	  order: 'updatedAt DESC',
-	             	  include: [ { model: models.UserContent, as: 'content' } ]})
+	             	  include: [ {model: models.UserContent, as: 'content'} ]})
 		  	.success(function(authorized_contents){
 		  		res.render('index',{ render_body: 'profile', userName: req.session.passport.user.displayName, own_contents: own_contents, authorized_contents: authorized_contents, fl: req.flash()});
 		  	})
