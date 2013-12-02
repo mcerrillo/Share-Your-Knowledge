@@ -13,7 +13,7 @@
     "passport": "*",
     "passport-google-oauth": "*",
     "sequelize": "1.7.0-alpha2",
-    "pg": "0.6.x"
+    "pg": "*"
   },
   "devDependencies": {
     "sqlite3": ">=2.0.0"
