@@ -8,18 +8,18 @@ exports.show = function(req, res, next) {
 	             order: 'name'})
 	   .success(function(own_contents) {
 
-		  /*models.Authorized
+		  models.Authorized
 		  	.findAll({where: {email: req.session.passport.user.emails[0].value},
 	             	  order: 'updatedAt DESC',
 	             	  include: [ {model: models.UserContent, as: 'content'} ]
-	             	})*/
+	             	})
 	   		
-	   		var query_1 = "SELECT * FROM Authorized WHERE email = ?";
+	   		/*var query_1 = "SELECT * FROM Authorized WHERE email = ?";
 
-	   		models.Sequelize.query(query_1,null,{raw: true},[req.session.passport.user.emails[0].value])
+	   		models.Sequelize.query(query_1,null,{raw: true},[req.session.passport.user.emails[0].value])*/
 		  	.success(function(authorized_contents){
 
-		  		var authorized_contents_aux = new Array();
+		  		/*var authorized_contents_aux = new Array();
 		  		var query_2 = "SELECT * FROM UserContent WHERE id = ?";
 		  		for(var i in authorized_contents){
 
@@ -33,7 +33,7 @@ exports.show = function(req, res, next) {
 		  			})
 		  		}
 		  		console.log('***************************************');
-		  		console.log(authorized_contents_aux);
+		  		console.log(authorized_contents_aux);*/
 		  		res.render('index',{ render_body: 'profile', userName: req.session.passport.user.displayName, own_contents: own_contents, authorized_contents: authorized_contents, fl: req.flash()});
 		  	})
 		  	.error(function(error) {
