@@ -251,6 +251,19 @@ exports.download = function(req, res, next) {
         })
 };
 
+exports.showDocument = function(req, res, next) {
+	var userID = req.query.userID;
+	var name = req.query.name;
+	var type = req.query.type;
+	var path = req.query.path;
+	var url = 'ec2-54-194-72-253.eu-west-1.compute.amazonaws.com%3A3000%2Ffile_download%3FuserID%3D' + userID + '%26name%3D' + name + '%26type%3D' + type + '%26path%3D' + path;
+	if(req.session.passport.user){
+		res.render('index',{ render_body: 'viewDocument', userName: req.session.passport.user.displayName, fl: req.flash(), url: url});
+	}else{
+		res.render('index',{ render_body: 'viewDocument', userName: undefined, fl: req.flash(), url: url});
+	}
+};
+
 exports.searchPublic = function(req, res, next){
 
 	var searchText = req.body.search_query;

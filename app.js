@@ -6,6 +6,7 @@ var express = require('express');
 var routes = require('./routes');
 var userController = require('./routes/user_controller');
 var contentController = require('./routes/content_controller');
+var apiController = require('./routes/api_controller');
 var about = require('./routes/about');
 var profile = require('./routes/profile');
 var http = require('http');
@@ -13,13 +14,13 @@ var path = require('path');
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-var GOOGLE_CLIENT_ID = "472666237299.apps.googleusercontent.com";
-var GOOGLE_CLIENT_SECRET = "i9SyhZD6rqDKvsmXvXZFukzs";
+var GOOGLE_CLIENT_ID = "730131485411.apps.googleusercontent.com";
+var GOOGLE_CLIENT_SECRET = "T69uMNzhWYH7LjWcqx3RTXUk";
 
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/login/google/callback"
+    callbackURL: "http://ec2-54-194-72-253.eu-west-1.compute.amazonaws.com:3000/login/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -101,11 +102,16 @@ app.get('/logout', function(req, res){
 app.get('/file_download',contentController.download);
 app.get('/file_public',contentController.public);
 app.get('/file_private',contentController.private);
+app.get('/viewDocument',contentController.showDocument);
 app.post('/file_share',contentController.share);
 app.post('/file_upload',contentController.create);
 app.post('/file_delete',contentController.delete);
 app.post('/search_public',contentController.searchPublic);
 
+/***********************API*********************************/
+app.get('/api/publicContent',apiController.getPublicContent);
+app.get('/api/privateContent',apiController.getPrivateContent);
+app.post('/api/file_delete',apiController.deleteContent);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -1,4 +1,5 @@
 var models = require('../models/models.js');
+var apiController = require('./api_controller');
 
 
 // After login
@@ -16,14 +17,14 @@ exports.login = function(req, res, next) {
             if (existing_user) {
                 res.redirect('/');
                 return;
-            } else {                
+            } else {
                 user.save()
                     .success(function() {
                         res.redirect('/');
                     })
                     .error(function(error) {
                         next(error);
-                    });
+                    }); 
             }
         })
         .error(function(error) {

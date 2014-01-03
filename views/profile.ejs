@@ -24,10 +24,10 @@
             <%var contentID = own_contents[i].dataValues.id%>
             <%if(status=="public"){%>
               <img src="/images/global.png" width='60' height='40'>
-              <%=name%>
+              <a  class="link" href='/viewDocument?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'><%=name%></a>
             <%}else{%>
               <img src="/images/candado.png" width='30' height='30'>
-              <%=name%>
+              <a  class="link" href='/viewDocument?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'><%=name%></a>
             <%}%>
             <form method='post' action='/file_delete?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>&authority=owner'>
         			<a class="btn btn-success" href='/file_download?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Download</a>
@@ -63,7 +63,7 @@
             <%var contentID = authorized_contents[i].content.dataValues.id%>
             
             <img src="/images/shared.png" width='30' height='30'>
-            <%=name%>
+            <a  class="link" href='/viewDocument?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'><%=name%></a>
             <form method='post' action='/file_delete?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>&authority=authorized&contentID=<%=contentID%>'>
                 <a class="btn btn-success" href='/file_download?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Download</a>
                 <a class="btn btn-success" onclick="addUsers(<%=index%>)">Share</a>

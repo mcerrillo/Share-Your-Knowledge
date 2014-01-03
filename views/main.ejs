@@ -15,11 +15,11 @@
         
         <%for(var i in contents){%>
         	<p>
-        		<%=contents[i].dataValues.name%>
         		<%var userID = contents[i].dataValues.userID%>
         		<%var name = contents[i].dataValues.name%>
         		<%var type = contents[i].dataValues.type%>
         		<%var path = contents[i].dataValues.path%>
+                <a  class="link" href='/viewDocument?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'><%=contents[i].dataValues.name%></a>
         	</p>
         	<p>
         		<a class="btn btn-success" href='/file_download?userID=<%=userID%>&name=<%=name%>&type=<%=type%>&path=<%=path%>'>Download</a>
