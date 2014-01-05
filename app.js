@@ -14,8 +14,8 @@ var path = require('path');
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-var GOOGLE_CLIENT_ID = /******************GOOGLE CLIENT ID**********************/;
-var GOOGLE_CLIENT_SECRET = /**************GOOGLE CLIENT SECRET******************/;
+var GOOGLE_CLIENT_ID = /******************GOOGLE CLIENT ID*************************************/;
+var GOOGLE_CLIENT_SECRET = /**************GOOGLE CLIENT SECRET*********************************/;
 
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
